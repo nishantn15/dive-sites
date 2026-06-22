@@ -216,6 +216,16 @@ function applyMinDives() {
 
 // ---------------- UI wiring ----------------
 function wireUI() {
+  // collapsible layers panel — start collapsed on small screens to free the map
+  const panel = document.getElementById("layers");
+  const ptoggle = document.getElementById("panelToggle");
+  const startCollapsed = window.matchMedia("(max-width:640px)").matches;
+  if (startCollapsed) { panel.classList.add("collapsed"); ptoggle.setAttribute("aria-expanded", "false"); }
+  ptoggle.addEventListener("click", () => {
+    const nowCollapsed = panel.classList.toggle("collapsed");
+    ptoggle.setAttribute("aria-expanded", String(!nowCollapsed));
+  });
+
   // layer toggles
   document.querySelectorAll('#layers input[data-layer]').forEach(cb => {
     cb.addEventListener("change", () => setLayerVisible(cb.dataset.layer, cb.checked));

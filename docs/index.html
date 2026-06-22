@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<link href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -36,6 +36,7 @@
   <section class="view view--on" id="view-globe">
     <div id="map"></div>
 
+    <button class="panel-toggle" id="panelToggle" aria-label="Toggle layers panel" aria-expanded="true">⚙︎ Layers</button>
     <aside class="panel panel--layers" id="layers">
       <h2 class="panel__h">Layers</h2>
       <label class="lyr lyr--ssi"><input type="checkbox" data-layer="sites_ssi" checked> <span class="dot"></span>SSI dive sites <em id="c-sites_ssi"></em></label>
@@ -89,7 +90,7 @@
 
 </main>
 
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
 <script src="config.js"></script>
 <script src="app.js"></script>
 </body>
