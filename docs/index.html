@@ -7,6 +7,17 @@
 <title>Dive Sites of the World · interactive atlas</title>
 <meta name="description" content="An interactive globe of 10,820 SSI + 5,903 PADI dive sites and 9,359 dive centers worldwide, ranked by logged dives." />
 
+<link rel="icon" href="assets/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon-96.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png" />
+
+<meta property="og:title" content="Dive Sites of the World" />
+<meta property="og:description" content="Interactive 3D-globe atlas of 16k+ dive sites & 9k+ dive centers worldwide (SSI + PADI), ranked by logged dives." />
+<meta property="og:image" content="assets/favicon-192.png" />
+<meta property="og:type" content="website" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -28,6 +39,12 @@
     <button class="tab" data-view="country">🗺️ By Country</button>
     <button class="tab" data-view="about">ℹ️ About</button>
   </nav>
+  <div class="search" id="search">
+    <span class="search__icon">🔎</span>
+    <input id="searchInput" type="search" autocomplete="off" spellcheck="false"
+           placeholder="Search dive sites — name or country… (Enter to map)" aria-label="Search dive sites" />
+    <button class="search__clear" id="searchClear" aria-label="Clear search" hidden>✕</button>
+  </div>
 </header>
 
 <main class="stage">
@@ -35,6 +52,11 @@
   <!-- ===== GLOBE VIEW ===== -->
   <section class="view view--on" id="view-globe">
     <div id="map"></div>
+
+    <div class="results" id="results" hidden>
+      <div class="results__head" id="resultsHead"></div>
+      <ul class="results__list" id="resultsList"></ul>
+    </div>
 
     <button class="panel-toggle" id="panelToggle" aria-label="Toggle layers panel" aria-expanded="true">⚙︎ Layers</button>
     <aside class="panel panel--layers" id="layers">
