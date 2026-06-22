@@ -63,7 +63,7 @@ try {
     mapReady = true;
   });
 } catch (e) {
-  showGlobeUnavailable("Your browser/device has WebGL disabled, so the 3D globe can’t load.");
+  showGlobeUnavailable("Your browser/device has WebGL disabled, so the 3D globe can't load.");
 }
 
 // Safety net: if the globe didn't come up within 8s (slow tiles, no WebGL),
@@ -74,7 +74,7 @@ function showGlobeUnavailable(msg) {
   const l = document.getElementById("loading");
   if (!l) return;
   l.innerHTML = '<span style="max-width:280px;text-align:center;line-height:1.6">'
-    + (msg || "The 3D globe is taking a while — it needs WebGL. The ranking tabs above still work.")
+    + (msg || "The 3D globe is taking a while - it needs WebGL. The ranking tabs above still work.")
     + '</span><button onclick="this.parentElement.style.display=\'none\'" style="margin-top:14px;background:#ff7964;border:0;color:#1a0a06;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer">Dismiss</button>';
 }
 
@@ -383,8 +383,8 @@ function renderResults(q) {
   box.hidden = false;
   SEARCH.activeIdx = -1;
   if (!all.length) {
-    head.textContent = `No sites match “${q.trim()}”`;
-    list.innerHTML = `<li class="results__empty">Try a site name like “Blue Hole” or a country.</li>`;
+    head.textContent = `No sites match "${q.trim()}"`;
+    list.innerHTML = `<li class="results__empty">Try a site name like "Blue Hole" or a country.</li>`;
     return;
   }
   const shown = all.slice(0, MAX_RESULTS);
@@ -393,7 +393,7 @@ function renderResults(q) {
     : `${all.length} match${all.length>1?"es":""} · Enter to map`;
   list.innerHTML = shown.map((r,i) => {
     const meta = r.src === "ssi"
-      ? `${r.country||"—"}` : `PADI · no dive count`;
+      ? `${r.country||"-"}` : `PADI · no dive count`;
     const dives = r.src === "ssi" ? `${(r.dives||0).toLocaleString()}` : "";
     return `<li class="res" data-i="${i}">
       <span class="res__dot res__dot--${r.src}"></span>
