@@ -31,6 +31,7 @@ async function getDetail(layer, id) {
 let minDives = 0;
 let map = null;
 let mapReady = false;
+let ssiAllFeatures = null;   // cached raw SSI site features for slider filtering
 
 // 1) Wire UI + load dashboard tables FIRST — these never depend on WebGL, so
 //    the ranking views always work even if the globe can't initialise.
@@ -80,8 +81,17 @@ function showGlobeUnavailable(msg) {
 
 async function addLayer(layer) {
   const src = layer;
+  // For SSI sites we cache the raw features so the min-dives slider can filter
+  // the SOURCE data (which makes clusters recompute) instead of only hiding
+  // unclustered points — at world zoom everything is clustered, so a
+  // point-only filter looked like it did nothing / "got stuck".
+  let data = DATA[layer];
+  if (layer === "sites_ssi") {
+    ssiAllFeatures = (await fetch(DATA[layer]).then(r => r.json())).features;
+    data = { type: "FeatureCollection", features: ssiAllFeatures };
+  }
   map.addSource(src, {
-    type: "geojson", data: DATA[layer],
+    type: "geojson", data,
     cluster: true, clusterRadius: 48, clusterMaxZoom: 7,
     // sum SSI dives inside clusters so big clusters read as "busy waters"
     clusterProperties: layer === "sites_ssi"
@@ -210,10 +220,15 @@ function setLayerVisible(layer, on) {
 }
 
 function applyMinDives() {
-  if (!map) return;
-  // filter SSI sites by min dives (clusters keep showing; points filter)
-  const f = ["all", ["!", ["has", "point_count"]], [">=", ["coalesce", ["get","dives"],0], minDives]];
-  if (map.getLayer("sites_ssi-pt")) map.setFilter("sites_ssi-pt", f);
+  if (!map || !ssiAllFeatures) return;
+  const src = map.getSource("sites_ssi");
+  if (!src) return;
+  // Re-feed the SOURCE with only sites >= the threshold, so clusters recompute
+  // and the whole layer (clusters + points) reflects the filter.
+  const feats = minDives <= 0
+    ? ssiAllFeatures
+    : ssiAllFeatures.filter(f => (f.properties.dives || 0) >= minDives);
+  src.setData({ type: "FeatureCollection", features: feats });
 }
 
 // ---------------- UI wiring ----------------
@@ -232,11 +247,14 @@ function wireUI() {
   document.querySelectorAll('#layers input[data-layer]').forEach(cb => {
     cb.addEventListener("change", () => setLayerVisible(cb.dataset.layer, cb.checked));
   });
-  // min dives
+  // min dives — update the label live, debounce the (heavier) source refilter
   const md = document.getElementById("minDives"), mo = document.getElementById("minDivesOut");
+  let mdT = null;
   md.addEventListener("input", () => {
-    minDives = +md.value; mo.textContent = minDives.toLocaleString();
-    applyMinDives();
+    minDives = +md.value;
+    mo.textContent = minDives.toLocaleString();
+    clearTimeout(mdT);
+    mdT = setTimeout(applyMinDives, 90);
   });
   document.getElementById("resetView").addEventListener("click", () =>
     map && map.easeTo({ center: [99.82,10.08], zoom: 1.6, pitch: 0, bearing: 0 }));
