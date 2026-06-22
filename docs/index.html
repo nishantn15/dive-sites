@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=5" />
+<meta name="theme-color" content="#06101e" />
+<title>Dive Sites of the World · interactive atlas</title>
+<meta name="description" content="An interactive globe of 10,820 SSI + 5,903 PADI dive sites and 9,359 dive centers worldwide, ranked by logged dives." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="masthead">
+  <div class="brand">
+    <span class="brand__eyebrow">Subaquatic Cartography · MMXXVI</span>
+    <h1 class="brand__title"><span class="brand__big">Dive&nbsp;Sites</span><span class="brand__small">of the World</span></h1>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab tab--on" data-view="globe">🌍 Globe</button>
+    <button class="tab" data-view="dives">🏆 Top by Dives</button>
+    <button class="tab" data-view="depth">🌊 By Depth</button>
+    <button class="tab" data-view="country">🗺️ By Country</button>
+    <button class="tab" data-view="about">ℹ️ About</button>
+  </nav>
+</header>
+
+<main class="stage">
+
+  <!-- ===== GLOBE VIEW ===== -->
+  <section class="view view--on" id="view-globe">
+    <div id="map"></div>
+
+    <aside class="panel panel--layers" id="layers">
+      <h2 class="panel__h">Layers</h2>
+      <label class="lyr lyr--ssi"><input type="checkbox" data-layer="sites_ssi" checked> <span class="dot"></span>SSI dive sites <em id="c-sites_ssi"></em></label>
+      <label class="lyr lyr--padi"><input type="checkbox" data-layer="sites_padi" checked> <span class="dot"></span>PADI dive sites <em id="c-sites_padi"></em></label>
+      <label class="lyr lyr--scen"><input type="checkbox" data-layer="centers_ssi"> <span class="dot"></span>SSI centers <em id="c-centers_ssi"></em></label>
+      <label class="lyr lyr--pcen"><input type="checkbox" data-layer="centers_padi"> <span class="dot"></span>PADI centers <em id="c-centers_padi"></em></label>
+
+      <h2 class="panel__h panel__h--mt">Filter</h2>
+      <label class="fld">Min logged dives (SSI)
+        <input type="range" id="minDives" min="0" max="50000" step="1000" value="0">
+        <output id="minDivesOut">0</output>
+      </label>
+      <p class="hint">SSI is the only source with a logged-dive count. Bigger, brighter dots = more dives.</p>
+      <button class="reset" id="resetView">Reset globe view</button>
+    </aside>
+
+    <div class="legend" id="legend">
+      <span class="legend__title">Logged dives (SSI)</span>
+      <div class="legend__ramp"></div>
+      <div class="legend__ticks"><span>0</span><span>50k</span><span>200k</span></div>
+    </div>
+
+    <div class="loading" id="loading"><div class="loading__spin"></div><span>Loading the globe…</span></div>
+  </section>
+
+  <!-- ===== TABLE VIEWS ===== -->
+  <section class="view view--table" id="view-dives">
+    <div class="tablewrap"><h2 class="tbl__title">Top 50 dive sites by logged dives <span class="tbl__sub">SSI · the world's most-dived sites</span></h2><div id="tbl-dives"></div></div>
+  </section>
+  <section class="view view--table" id="view-depth">
+    <div class="tablewrap"><h2 class="tbl__title">Top 50 by average max depth <span class="tbl__sub">SSI · sites with ≥50 logged dives</span></h2><div id="tbl-depth"></div></div>
+  </section>
+  <section class="view view--table" id="view-country">
+    <div class="tablewrap"><h2 class="tbl__title">Top dive nations <span class="tbl__sub">SSI · by total logged dives</span></h2><div id="tbl-country"></div></div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="view view--about" id="view-about">
+    <div class="about">
+      <h2>About this atlas</h2>
+      <p id="about-counts"></p>
+      <p>Every point is plotted from the public SSI and PADI dive-site locators. <strong>Only SSI publishes a logged-dive count per site</strong>, so all popularity rankings are SSI-only — PADI exposes no dive/visit metric, which is why the two are kept as separate, independently toggleable layers rather than merged.</p>
+      <ul>
+        <li><strong>SSI dive sites</strong> — sized & coloured by logged dives.</li>
+        <li><strong>PADI dive sites</strong> — coloured by presence; some are unnamed map pins.</li>
+        <li><strong>Centers</strong> — SSI carries full contact details; PADI carries membership tier, languages & activities.</li>
+      </ul>
+      <p class="about__foot">Built on MapLibre GL JS (globe projection) · MapTiler imagery · data harvested for educational use. Counts are point-in-time; logged dives tick up live at source.</p>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

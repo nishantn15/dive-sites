@@ -1,0 +1,27 @@
+{
+ "generated": "2026-06-22",
+ "layers": {
+  "sites_ssi": {
+   "count": 10820,
+   "bytes": 2261970,
+   "label": "SSI dive sites",
+   "metric": "loggedDives"
+  },
+  "sites_padi": {
+   "count": 5903,
+   "bytes": 1193277,
+   "label": "PADI dive sites"
+  },
+  "centers_ssi": {
+   "count": 3764,
+   "bytes": 848869,
+   "label": "SSI centers"
+  },
+  "centers_padi": {
+   "count": 5594,
+   "bytes": 1277825,
+   "label": "PADI centers"
+  }
+ },
+ "note": "Only SSI exposes a logged-dive popularity metric. PADI has no dive counts; cross-source ranking is not possible. Sources are kept as separate layers."
+}
