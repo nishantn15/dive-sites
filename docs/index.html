@@ -33,11 +33,11 @@
     <h1 class="brand__title"><span class="brand__big">Dive&nbsp;Sites</span><span class="brand__small">of the World</span></h1>
   </div>
   <nav class="tabs" id="tabs">
-    <button class="tab tab--on" data-view="globe">🌍 Globe</button>
-    <button class="tab" data-view="dives">🏆 Top by Dives</button>
-    <button class="tab" data-view="depth">🌊 By Depth</button>
-    <button class="tab" data-view="country">🗺️ By Country</button>
-    <button class="tab" data-view="about">ℹ️ About</button>
+    <button class="tab tab--on" data-view="globe">🌍<span class="tab__lbl">Globe</span></button>
+    <button class="tab" data-view="dives">🏆<span class="tab__lbl">Top by Dives</span></button>
+    <button class="tab" data-view="depth">🌊<span class="tab__lbl">By Depth</span></button>
+    <button class="tab" data-view="country">🗺️<span class="tab__lbl">By Country</span></button>
+    <button class="tab" data-view="about">ℹ️<span class="tab__lbl">About</span></button>
   </nav>
   <div class="search" id="search">
     <span class="search__icon">🔎</span>
@@ -54,7 +54,10 @@
     <div id="map"></div>
 
     <div class="results" id="results" hidden>
-      <div class="results__head" id="resultsHead"></div>
+      <div class="results__bar">
+        <span class="results__head" id="resultsHead"></span>
+        <button class="results__close" id="resultsClose" aria-label="Close results">✕</button>
+      </div>
       <ul class="results__list" id="resultsList"></ul>
     </div>
 

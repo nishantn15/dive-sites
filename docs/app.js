@@ -446,9 +446,16 @@ function clearMapHits() {
     map.getSource("search-hits").setData({ type:"FeatureCollection", features: [] });
 }
 
+function closeResults() {
+  document.getElementById("results").hidden = true;
+  SEARCH.activeIdx = -1;
+  const i = document.getElementById("searchInput");
+  if (i) i.blur();   // dismiss the mobile keyboard
+}
+
 function selectResult(r, fromMap) {
   if (!r) return;
-  document.getElementById("results").hidden = true;
+  closeResults();
   const goGlobe = document.querySelector('#tabs .tab[data-view="globe"]');
   if (goGlobe && !goGlobe.classList.contains("tab--on")) goGlobe.click();
   if (map) {
@@ -484,7 +491,7 @@ function selectResult(r, fromMap) {
     if (e.key === "Enter") {
       e.preventDefault();
       if (SEARCH.activeIdx >= 0 && shown[SEARCH.activeIdx]) selectResult(shown[SEARCH.activeIdx]);
-      else { commitToMap(); document.getElementById("results").hidden = true; }
+      else { commitToMap(); closeResults(); }
     } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
       const lis = document.querySelectorAll("#resultsList .res");
@@ -499,4 +506,12 @@ function selectResult(r, fromMap) {
     document.getElementById("results").hidden=true; clearMapHits(); input.blur();
   }
   clear.addEventListener("click", doClear);
+  // close button only hides the list (keeps the query + any map hits)
+  document.getElementById("resultsClose").addEventListener("click", closeResults);
+  // re-open the list when tapping back into a non-empty search box
+  input.addEventListener("focus", () => {
+    if (input.value.trim().length >= MIN_CHARS && SEARCH.matches.length) {
+      document.getElementById("results").hidden = false;
+    }
+  });
 })();
